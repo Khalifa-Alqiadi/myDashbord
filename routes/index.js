@@ -5,6 +5,7 @@ const assert = require("assert")
 var router = express.Router();
 const Project = require('../models/user');
 const Skills = require('../models/skill');
+const Qualification = require('../models/qualification');
 
 const db = require("../database/db");
 
@@ -159,6 +160,54 @@ router.post('/update_skill', function(req, res, next){
 
 router.get('/delete_skill/:id', function(req, res, next) {	
 	Skills.deleteOne({"_id": req.params.id}, function(err, result) {
+		if (err) {
+			console.log('error' ,err)
+			res.render('/index')
+		} else {
+			res.redirect('/index')
+		}
+	})
+})
+
+
+// Start qualification
+
+router.get("/qualification", (req, res, next)=>{
+  Qualification.find().then((result) =>{
+    res.render("qualification", {title: "Qualifications", qualification: result})
+  })
+})
+
+router.post('/add_qualifi', (req, res) =>{
+  const qualification = new Qualification({
+    id: mongoose.Types.ObjectId,
+    name: req.body.name,
+    description: req.body.description,
+    yearStart: req.body.yearStart,
+    yearEnd: req.body.yearEnd
+  })
+  qualification.save();
+  res.render('qualification', {title: "qualification"});
+});
+
+router.post('/update_qualifi', function(req, res, next){
+	var item = {
+		name: req.body.name,
+		description: req.body.description,
+		yearStart: req.body.yearStart,
+		yearEnd: req.body.yearEnd
+	};
+	var id = req.body.id;
+	Qualification.updateOne({"_id": id}, {$set: item}, item, function(err, result){
+		assert.equal(null, err);
+		console.log("item updated");
+	})
+  res.render('qualification', {title: "qualification"})
+})
+
+
+router.get('/delete_qualif/:id', function(req, res, next) {	
+	Qualification.deleteOne({"_id": req.params.id}, function(err, result) {
 		if (err) {
 			console.log('error' ,err)
 			res.render('/index')
