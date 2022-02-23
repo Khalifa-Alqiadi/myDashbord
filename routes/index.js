@@ -74,8 +74,15 @@ const upload = multer({
 /* GET home page. */
 
 router.get("/", (req, res, next)=>{
-  res.render("index", {title: "home"})
+  
+    res.render("index", {title: "DASHBORD", ProjectCont: proj()})
 })
+
+function proj(){
+  Project.count({}, (err, result)=>{
+    return result;
+  })
+}
 
 router.get('/projects', function(req, res, next) {
   Project.find().then((reslut)=>{
