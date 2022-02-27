@@ -19,7 +19,8 @@
         <i class="fa fa-tag"></i>
         <div class="info">
           Total Skills
-          <span><a href="/skills"></a></span>
+          <span><a href="/skills"><%= skills %></a></span>
+          
         </div>
       </div>
     </div>
@@ -28,8 +29,7 @@
         <i class="fa fa-tag"></i>
         <div class="info">
           Total Qualification
-          <span><a href="/qualifi">
-            
+          <span><a href="/qualification"><%= qualification %>
           </a></span>
         </div>
       </div>
@@ -39,7 +39,7 @@
         <i class="fa fa-book"></i>
         <div class="info">
           Total Projects
-          <span><a href="/projects"></a></span>
+          <span><a href="/projects"><%= project %></a></span>
         </div>
       </div>
     </div>
@@ -58,10 +58,50 @@
         </div>
         <div class="card-body">
           <ul class=" list-unstyled latest-users">
-            <li>Khalifa Alqiadi</li>
-            <li>Khalifa@gmail.com</li>
-            <li>Web Developer</li>
+            <% for(let item = 0; item < user.length; item++){ %>
+              <li><%= user[item].username %></li>
+              <li><%= user[item].email %></li>
+              <li><a href="/forgot-password" class="text-primary">Edit password</a></li>
+              <div class="modal fade" id="editModal" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Edit Profile</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/update_profile" method="post">
+                                <input type="hidden" name="id" value="<%= user[item]._id %>">
+                                <div class="mb-3 row">
+                                    <label for="name" class="col-sm-3 col-form-label">Your Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="name" class="form-control" id="name"
+                                            placeholder="Enter Project Name" required
+                                            value="<%= user[item].username %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" class="form-control" name="email" id="email"
+                                            placeholder="Enter Email" required
+                                            value="<%= user[item].email %>">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" value="Update" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
           </ul>
+          
           <a href="#" data-bs-toggle="modal" data-bs-target="#editModal">
             <span class="btn btn-success">
               <i class="fa fa-edit"></i>Edit
@@ -73,37 +113,70 @@
     <div class="col-sm-6">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-tag"></i> Latest <span class="btn btn-info numbers">5</span> Experience
+          <i class="fa fa-tag"></i> Latest <span class="btn btn-info numbers">5</span> Project
           <span class="toggle-info pull-right">
             <i class="fa fa-plus fa-lg"></i>
           </span>
         </div>
         <div class="card-body">
           <ul class="list-unstyled latest-users">
-            <li>
-              HTML
-              <a href="include/experience.html">
-                <span class="btn btn-success pull-right">
-                  <i class="fa fa-edit"></i> Edit
-                </span>
-              </a>
-            </li>
-            <li>
-              CSS
-              <a href="include/experience.html">
-                <span class="btn btn-success pull-right">
-                  <i class="fa fa-edit"></i> Edit
-                </span>
-              </a>
-            </li>
-            <li>
-              Javascript
-              <a href="include/experience.html">
-                <span class="btn btn-success pull-right">
-                  <i class="fa fa-edit"></i> Edit
-                </span>
-              </a>
-            </li>
+            <% for(let item=0; item< projects.length; item++){ %>
+              <li class="col-sm-12 py-0  d-flex justify-content-between align-items-center">
+                <p class="mt-2"><%= projects[item].name %></p>
+                <a href="include/experience.html" data-bs-toggle="modal"
+                  data-bs-target="#editModal<%= projects[item]._id %>">
+                  <span class="btn btn-success">
+                    <i class="fa fa-edit"></i> Edit
+                  </span>
+                </a>
+              </li>
+              <div class="modal fade" id="editModal<%= projects[item]._id %>" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Edit Project</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/update_project" method="post">
+                                <input type="hidden" name="id" value="<%= projects[item]._id %>">
+                                <div class="mb-3 row">
+                                    <label for="name" class="col-sm-3 col-form-label">Project Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="name" class="form-control" id="name"
+                                            placeholder="Enter Project Name" required
+                                            value="<%= projects[item].name %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="description" id="desc"
+                                            placeholder="Enter Description" required
+                                            value="<%= projects[item].description %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="link" class="col-sm-3 col-form-label">link</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="link" class="form-control" id="link"
+                                            placeholder="Enter Institute Name" required
+                                            value="<%= projects[item].link %>">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" value="Update" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% } %>
           </ul>
         </div>
       </div>
@@ -112,39 +185,64 @@
   <div class="row">
     <div class="col-sm-6">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header col-sm-12">
           <i class="fa fa-tag"></i> Latest <span class="btn btn-info numbers">3</span>
           Skills
-          <span class="toggle-info pull-right">
-            <i class="fa fa-plus fa-lg"></i>
+          <span class="toggle-info">
+            <i class="fa fa-plus fa-lg text-right"></i>
           </span>
         </div>
         <div class="card-body">
           <ul class="list-unstyled latest-users">
-            <li>
-              Fornt End
-              <a href="include/experience.html">
-                <span class="btn btn-success pull-right">
-                  <i class="fa fa-edit"></i> Edit
-                </span>
-              </a>
-            </li>
-            <li>
-              Back End
-              <a href="include/experience.html">
-                <span class="btn btn-success pull-right">
-                  <i class="fa fa-edit"></i> Edit
-                </span>
-              </a>
-            </li>
-            <li>
-              UI/Ux
-              <a href="include/experience.html">
-                <span class="btn btn-success pull-right">
-                  <i class="fa fa-edit"></i> Edit
-                </span>
-              </a>
-            </li>
+            <% for(let item=0; item< skill.length; item++){ %>
+              <li class="col-sm-12 py-0  d-flex justify-content-between align-items-center">
+                <p class="mt-2"><%= skill[item].name %></p>
+                <a href="#" data-bs-toggle="modal"
+                  data-bs-target="#editModal<%= skill[item]._id %>">
+                  <span class="btn btn-success">
+                    <i class="fa fa-edit"></i> Edit
+                  </span>
+                </a>
+              </li>
+              <div class="modal fade" id="editModal<%= skill[item]._id %>" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Edit Skill</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/update_skill" method="post">
+                                <input type="hidden" name="id" value="<%= skill[item]._id %>">
+                                <div class="mb-3 row">
+                                    <label for="name" class="col-sm-3 col-form-label">Skill Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="name" class="form-control" id="name"
+                                            placeholder="Enter Project Name" required
+                                            value="<%= skill[item].name %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="description" id="desc"
+                                            placeholder="Enter Description" required
+                                            value="<%= skill[item].description %>">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" value="Update" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            
           </ul>
         </div>
       </div>
@@ -153,47 +251,23 @@
 </div>
 <!-- End Dashboard Page -->
 
-<!-- Modal Edit-->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Edit Your Profile</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="skills.html" method="post">
-          <div class="mb-3 row">
-            <label for="Experience" class="col-sm-3 col-form-label">Your Name</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="skill" placeholder="Enter Your Full Name" required
-                value="Khalifa Alqiadi">
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="years" class="col-sm-3 col-form-label">Email</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="description" placeholder="Enter Email" required
-                value="khalifa@gmail.com">
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="company" class="col-sm-3 col-form-label">Skill</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="level" placeholder="Enter Skill" required
-                value="Web Developer">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Update</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<script>
+    
+  $('.toggle-info').click(function () {
 
+      $(this).toggleClass('selected').parent().next('.card-body').fadeToggle(100);
 
+      if($(this).hasClass('selected')){
+
+          $(this).html('<i class="fa fa-minus fa-lg"></i>');
+
+      }else{
+
+          $(this).html('<i class="fa fa-plus fa-lg"></i>');
+
+      }
+
+  });
+</script>
 
 <%- include('includes/footer.ejs') %>

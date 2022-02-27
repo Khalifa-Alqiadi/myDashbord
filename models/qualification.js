@@ -21,6 +21,10 @@ const qualification = new Schema({
     yearEnd:{
         type:String,
         required: true
+    },
+    isActive:{
+        type:String,
+        default: true
     }
 });
 

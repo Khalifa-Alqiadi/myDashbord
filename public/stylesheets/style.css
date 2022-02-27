@@ -212,9 +212,17 @@ ul{
 .latest .row{
   padding-bottom: 20px;
 }
+.activate{
+  color: #FFF;
+  margin-left: 5px;
+}
 
 .latest .toggle-info{
   color: #999;
+}
+.latest .toggle-info .fa-plus{
+  width: 70%;
+  text-align: right;
 }
 
 .latest .toggle-info:hover{

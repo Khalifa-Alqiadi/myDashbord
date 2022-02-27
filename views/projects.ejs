@@ -19,15 +19,20 @@
 
             <tr>
                 <td><%= i++ %></td>
-                <td><img src="<%= projects[item].image %>" class="rounded-circle img-fluid img-thumbnail circle"></td>
+                <td><img src="/images/<%= projects[item].image %>" class="rounded-circle img-fluid img-thumbnail circle"></td>
                 <td><%= projects[item].name %></td>
                 <td><%= projects[item].description %></td>
                 <td><%= projects[item].link %></td>
                 <td>
                     <a href="#" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#editModal<%= projects[item]._id %>"><i class="fa fa-edit"></i> Edit</a>
-                    <a href="/delete_project/<%= projects[item]._id %>" class="btn btn-danger confirm"> <i
-                            class="fa fa-close"></i> Delete</a>
+                    <% if(projects[item].isActive == "false"){ %>
+                        <a href="/notActive_project/<%= projects[item]._id %>" class=" btn btn-danger activate confirm"> <i
+                            class="fa fa-close"></i> notActive</a>
+                    <% }else{ %>
+                        <a href="/isActive_project/<%= projects[item]._id %>" class=" btn btn-info activate confirm"> <i
+                            class="fa fa-close"></i> isActive</a>
+                    <% } %>
                 </td>
             </tr>
             <div class="modal fade" id="editModal<%= projects[item]._id %>" tabindex="-1"

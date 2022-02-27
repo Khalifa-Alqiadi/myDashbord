@@ -6,3 +6,5 @@ mongoose.connect(MONGODB_URI);
 mongoose.connection.on('connected', () => {
     console.log('Connected to MongoDB @ 27017');
 });
+
+module.exports = mongoose.connection

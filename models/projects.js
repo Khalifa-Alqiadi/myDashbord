@@ -21,6 +21,10 @@ const projectSchema = new Schema({
     image:{
         type:String,
         required: true
+    },
+    isActive:{
+        type:String,
+        default: true
     }
 });
 
