@@ -18,6 +18,10 @@ const mySkills = new Schema({
         type:String,
         required: true
     },
+    skill: {
+        type:Number,
+        required: true
+    },
     isActive: {
         type:String,
         default: true

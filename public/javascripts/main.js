@@ -1,3 +1,5 @@
+$(function (){
+
 // Toggle Spin Class Icon
 
 // document.querySelector(".toggle-setting .fa-user").onclick = function(){
@@ -27,13 +29,15 @@
 // });
 
 
-//Confirmation Message On Button
+// Confirmation Message On Button
 
-$('.confirm').click(function(){
+// $('.confirm').click(function(){
 
-    return confirm('Are You Sure?');
+//     return confirm('Are You Sure?');
     
-});
+// });
+
+
 
 
 // Add Asterisk On Required Field
@@ -43,3 +47,5 @@ $('.confirm').click(function(){
 //         $(this).after('<span class="asterisk">*</span>');
 //     }
 // });
+
+})

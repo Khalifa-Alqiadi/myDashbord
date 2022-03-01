@@ -1,273 +1,204 @@
-<%- include('includes/head.ejs') %>
-<%- include('includes/nav.ejs') %>
-
-<!-- Start Dashboard Page  -->
-<div class="container home-stats text-center">
-  <h1><%= title %></h1>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="stat st-experi">
-        <i class="fa fa-tag"></i>
-        <div class="info">
-          Total Experience
-          <span><a href="include/experience.html">5</a></span>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="stat st-skills">
-        <i class="fa fa-tag"></i>
-        <div class="info">
-          Total Skills
-          <span><a href="/skills"><%= skills %></a></span>
-          
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="stat st-quali">
-        <i class="fa fa-tag"></i>
-        <div class="info">
-          Total Qualification
-          <span><a href="/qualification"><%= qualification %>
-          </a></span>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="stat st-course">
-        <i class="fa fa-book"></i>
-        <div class="info">
-          Total Projects
-          <span><a href="/projects"><%= project %></a></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container latest">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <i class="fa fa-users"></i> This Your Info
-          <span class="toggle-info pull-right">
-            <i class="fa fa-plus fa-lg"></i>
-          </span>
-        </div>
-        <div class="card-body">
-          <ul class=" list-unstyled latest-users">
-            <% for(let item = 0; item < user.length; item++){ %>
-              <li><%= user[item].username %></li>
-              <li><%= user[item].email %></li>
-              <li><a href="/forgot-password" class="text-primary">Edit password</a></li>
-              <div class="modal fade" id="editModal" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Edit Profile</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="/update_profile" method="post">
-                                <input type="hidden" name="id" value="<%= user[item]._id %>">
-                                <div class="mb-3 row">
-                                    <label for="name" class="col-sm-3 col-form-label">Your Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="name" class="form-control" id="name"
-                                            placeholder="Enter Project Name" required
-                                            value="<%= user[item].username %>">
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="email" class="col-sm-3 col-form-label">Email</label>
-                                    <div class="col-sm-9">
-                                        <input type="email" class="form-control" name="email" id="email"
-                                            placeholder="Enter Email" required
-                                            value="<%= user[item].email %>">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <input type="submit" value="Update" class="btn btn-primary">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <% } %>
-          </ul>
-          
-          <a href="#" data-bs-toggle="modal" data-bs-target="#editModal">
-            <span class="btn btn-success">
-              <i class="fa fa-edit"></i>Edit
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <i class="fa fa-tag"></i> Latest <span class="btn btn-info numbers">5</span> Project
-          <span class="toggle-info pull-right">
-            <i class="fa fa-plus fa-lg"></i>
-          </span>
-        </div>
-        <div class="card-body">
-          <ul class="list-unstyled latest-users">
-            <% for(let item=0; item< projects.length; item++){ %>
-              <li class="col-sm-12 py-0  d-flex justify-content-between align-items-center">
-                <p class="mt-2"><%= projects[item].name %></p>
-                <a href="include/experience.html" data-bs-toggle="modal"
-                  data-bs-target="#editModal<%= projects[item]._id %>">
-                  <span class="btn btn-success">
-                    <i class="fa fa-edit"></i> Edit
-                  </span>
-                </a>
-              </li>
-              <div class="modal fade" id="editModal<%= projects[item]._id %>" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Edit Project</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="/update_project" method="post">
-                                <input type="hidden" name="id" value="<%= projects[item]._id %>">
-                                <div class="mb-3 row">
-                                    <label for="name" class="col-sm-3 col-form-label">Project Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="name" class="form-control" id="name"
-                                            placeholder="Enter Project Name" required
-                                            value="<%= projects[item].name %>">
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="description" id="desc"
-                                            placeholder="Enter Description" required
-                                            value="<%= projects[item].description %>">
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="link" class="col-sm-3 col-form-label">link</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="link" class="form-control" id="link"
-                                            placeholder="Enter Institute Name" required
-                                            value="<%= projects[item].link %>">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <input type="submit" value="Update" class="btn btn-primary">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <% } %>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header col-sm-12">
-          <i class="fa fa-tag"></i> Latest <span class="btn btn-info numbers">3</span>
-          Skills
-          <span class="toggle-info">
-            <i class="fa fa-plus fa-lg text-right"></i>
-          </span>
-        </div>
-        <div class="card-body">
-          <ul class="list-unstyled latest-users">
-            <% for(let item=0; item< skill.length; item++){ %>
-              <li class="col-sm-12 py-0  d-flex justify-content-between align-items-center">
-                <p class="mt-2"><%= skill[item].name %></p>
-                <a href="#" data-bs-toggle="modal"
-                  data-bs-target="#editModal<%= skill[item]._id %>">
-                  <span class="btn btn-success">
-                    <i class="fa fa-edit"></i> Edit
-                  </span>
-                </a>
-              </li>
-              <div class="modal fade" id="editModal<%= skill[item]._id %>" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Edit Skill</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="/update_skill" method="post">
-                                <input type="hidden" name="id" value="<%= skill[item]._id %>">
-                                <div class="mb-3 row">
-                                    <label for="name" class="col-sm-3 col-form-label">Skill Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="name" class="form-control" id="name"
-                                            placeholder="Enter Project Name" required
-                                            value="<%= skill[item].name %>">
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="desc" class="col-sm-3 col-form-label">Description</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="description" id="desc"
-                                            placeholder="Enter Description" required
-                                            value="<%= skill[item].description %>">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <input type="submit" value="Update" class="btn btn-primary">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <% } %>
-            
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Dashboard Page -->
-
-<script>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+    <title><%= title %></title>
+</head>
+<body>
     
-  $('.toggle-info').click(function () {
+    <!-- Start Navbar -->
+    <section id="header">
+        <div class="header container">
+            <div class="nav-bar">
+                <div class="brand">
+                    <a href="#hero"><h1><span>K</span>halifa <span>AL</span>-qiadi</h1></a>
+                </div>
+                <i class='bx bx-toggle-left change-theme' id="theme-button"></i>
+                <div class="nav-list">
+                    <div class="hamburger"><div class="bar"></div></div>
+                    <ul>
+                        <li><a href="#hero" data-after="Home">Home</a></li>
+                        <li><a href="#about" data-after="About">About Us</a></li>
+                        <li><a href="#services" data-after="Services">Services</a></li>
+                        <li><a href="#projects" data-after="Projects">Projects</a></li>
+                        <li><a href="#contact" data-after="Contact">Contact Me</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Navbar -->
 
-      $(this).toggleClass('selected').parent().next('.card-body').fadeToggle(100);
+    <!-- Start Header Section -->
+    <section id="hero">
+        <div class="hero container">
+            <div>
+                <h1>Hi I'M<span></span></h1> 
+                <h1><%= abouts.firstname %> <%= abouts.lastname %> <span></span></h1> 
+                <h1><%= abouts.title %> <span></span></h1>
+                <a href="https://github.com/fiteer" type="button" class="cat">All Projects</a>
+            </div>
+            
+        </div>
+    </section>
+    <!-- End Header Section -->
+    <!-- Start About Section -->
+    <section id="about">
+        <div class="about container">
+            <div class="col-left">
+                <div class="about-img">
+                    <img src="/images/<%= abouts.image %>" alt="">
+                </div>
+            </div>
+            <div class="col-right">
+                <h1 class="section-title">About <span>Me</span></h1>
+                <h2><%= abouts.description1 %></h2>
+                <p>
+                    <%= abouts.description2 %>
+                </p>
+                <a href="<%= abouts.cv %>" class="cat" download="<%= abouts.cv %>">Dowaload CV</a>
+            </div>
+        </div>
+    </section>
+    <!-- End About Section -->
+    <!-- Start Skills Section -->
+    <!-- <section class="skills" id="skills">
+        <div class="container">
+            
+              
+        </div>
+    </section> -->
+    <!-- End Skills Section -->
+    <!-- Start Services Section -->
+    <div id="services">
+        <div class="services container">
+            <div class="services-top">
+                <h1 class="section-title"><span>All</span> Skills</h1>
+            </div>
+            <div class="services-button">
+                <% for(var item=0; item< skills.length; item++){ %>
+                    <% if(skills[item].isActive == 'true'){ %>
+                        <div class="services-item">
+                            <div class="icon">
+                                <img src="/images/<%= skills[item].imageskill %>" alt="">
+                            </div>
+                            <h2><%= skills[item].name %></h2>
+                            <p>
+                                <%= skills[item].description %>
+                            </p>
+                            <div class="barline">
+                                <div class="countbar" data-percentNumber="<%= skills[item].skill %>"></div>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+                
+            </div>
+        </div>
+    </div>
+    <!-- End Services Section -->
 
-      if($(this).hasClass('selected')){
+    <!-- Start Project Section -->
+    <div id="projects">
+        <div class="projects container">
+            <div class="project-header">
+                <h1 class="section-title"><span>Our</span> Project</h1>
+            </div>
+            <div class="all-projects">
+                <% let i = 1 %>
+                <% for(let item =0; item< projects.length; item++){ %>
+                    <% if(projects[item].isActive == "true"){ %>
+                        <div class="project-item">
+                            <div class="project-info">
+                                <h1>Project <%= i++ %></h1>
+                                <h2><%= projects[item].name %></h2>
+                                <p><%= projects[item].description %></p>
+                            </div>
+                            <div class="project-img">
+                                <img src="/images/<%= projects[item].image %>" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="icons">
+                                    <a href="">
+                                        <img src="/images/icons8-link-50 (1).png" alt="">
+                                    </a>
+                                    <span>|</span>
+                                    <a href="<%= projects[item].link %>">
+                                        <img src="/images/icons8-download-64.png" alt="">
+                                    </a>
+                                </div>
+                                <a href="<%= projects[item].repositories %>" class="cat">Source Code</a>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <!-- End Project Section -->
+    
 
-          $(this).html('<i class="fa fa-minus fa-lg"></i>');
+    <!-- Start Contact Section -->
+    <section id="contact">
+        <div class="contact container">
+            <div class="contact-header"><h1 class="section-title"><span>Contact</span> Me</h1></div>
+            <div class="contact-items">
+                <div class="contact-item">
+                    <form  action="https://formspree.io/f/mqknekle" method="POST">
+                        <div class="form-control">
+                            <label for="username">Name</label>
+                            <input type="text" id="username" name="username" placeholder="Enter Your Name">
+                            <p>me</p>
+                        </div>
+                        <div class="form-control">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter Your Email">
+                            <p></p>
+                        </div>
+                        <div class="form-control">
+                            <label for="message">message</label>
+                            <textarea name="message" id="message" placeholder="Enter Your Message"></textarea>
+                            <p></p>
+                        </div>
+                        <div class="form-control">
+                            <button type="submit" class="cat">send</button>
+                        </div>
 
-      }else{
+                    </form>
+                    <img src="image/site.PNG" alt="">
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- End Contact Section -->
 
-          $(this).html('<i class="fa fa-plus fa-lg"></i>');
-
-      }
-
-  });
-</script>
-
-<%- include('includes/footer.ejs') %>
+    <!-- Start Footer -->
+    <section id="footer">
+        <div class="footer container">
+            <div class="brand"><h1><span>K</span>halifa <span>AL-</span>qiadi</h1></div>
+            <h2>You can contact us via</h2>
+            <div class="social-icon">
+                <div class="social-item">
+                    <a href="#"><img src="image/iconf.png" alt=""></a>
+                </div>
+                <div class="social-item">
+                    <a href="#"><img src="image/icon1.png" alt=""></a>
+                </div>
+                <div class="social-item">
+                    <a href="#"><img src="layout/image/iconi.png" alt=""></a>
+                </div>
+                <div class="social-item">
+                    <a href="#"><img src="icong.png" alt=""></a>
+                </div>
+            </div>
+            <p>Copyright &copy 2022: 777khlefawww@gmail.com</p>
+        </div>
+    </section>
+    <!-- End Footer -->
+    <script src="/javascripts/app.js"></script>
+</body>
+</html>
+    

@@ -1,0 +1,202 @@
+<%- include('../includes/head.ejs') %>
+<!--  -->
+<!-- end setting box -->
+<%- include('../includes/nav.ejs') %>
+<h1 class="text-center"><%= title %></h1>
+<div class="container exper">
+    <button class="btn btn-sm btn-primary my-3 py-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+        class="fa fa-plus"></i> Add New
+    </button>
+    <% if (typeof addSkillSuccess != 'undefined' && addSkillSuccess) { %>
+        <div class="fw-bold alert alert-success validate border-success"><%- addSkillSuccess %></div>
+    <% } else if(typeof addSkillField != 'undefined' && addSkillField) { %>
+        <div class="fw-bold alert alert-danger validate border-danger"><%- addSkillField %></div>
+    <% } else if(typeof updateSkillField != 'undefined' && updateSkillField) { %>
+        <div class="fw-bold alert alert-danger validate border-danger"><%- updateSkillField %></div>
+    <% } else if(typeof updateSkillSuccess != 'undefined' && updateSkillSuccess) { %>
+        <div class="fw-bold alert alert-success validate border-success"><%- updateSkillSuccess %></div>
+    <% } else if(typeof inActiveSuccess != 'undefined' && inActiveSuccess) { %>
+        <div class="fw-bold alert alert-success validate border-success"><%- inActiveSuccess %></div>
+    <% } else if(typeof inActiveField != 'undefined' && inActiveField) { %>
+        <div class="fw-bold alert alert-danger validate border-danger"><%- inActiveField %></div>
+    <% } %>
+    <div class="table-responsive">
+        <table class="main-table manage-members text-center table table-bordered">
+            <tr>
+                <td>#ID</td>
+                <td>Image</td>
+                <td>Skill Name</td>
+                <td>Description</td>
+                <td>Numbetr</td>
+                <td>Control</td>
+            </tr>
+            <% let i =1 %>
+            <% for(let item =0; item< skills.length; item++){ %>
+
+            <tr>
+                <td><%= i++ %></td>
+                <td><img src="/images/<%= skills[item].imageskill %>" class="rounded-circle img-fluid img-thumbnail circle"></td>
+                <td><%= skills[item].name %></td>
+                <td class="col-sm-4"><%= skills[item].description %></td>
+                <td><%= skills[item].skill %>%</td>
+                <td>
+                    <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#editModal<%= skills[item]._id %>"><i class="fa fa-edit"></i> Edit</a>
+                        <% if(skills[item].isActive == "false"){ %>
+                            <a href="#" class=" btn btn-danger activate confirm" data-bs-toggle="modal"
+                                data-bs-target="#notActive_skill<%= skills[item]._id %>"> <i
+                                class="fa fa-close"></i> notActive
+                            </a>
+                            <div class="modal fade" id="notActive_skill<%= skills[item]._id %>" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Are you sure about the change process?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <a href="/dashboard/notActive_skill/<%= skills[item]._id %>" class="btn btn-primary">I Sure</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }else{ %>
+                            <a href="#" class=" btn btn-info activate confirm" data-bs-toggle="modal"
+                                data-bs-target="#isActive_skill<%= skills[item]._id %>"> <i
+                                class="fa fa-close"></i> isActive
+                            </a>
+                            <div class="modal fade" id="isActive_skill<%= skills[item]._id %>" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Are you sure about the change process?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <a href="/dashboard/isActive_skill/<%= skills[item]._id %>" class="btn btn-primary">I Sure</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                </td>
+            </tr>
+            <div class="modal fade" id="editModal<%= skills[item]._id %>" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Edit Project</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/dashboard/update_skill" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="<%= skills[item]._id %>">
+                                <div class="mb-3 row">
+                                    <label for="name" class="col-sm-3 col-form-label">Skill Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="name" class="form-control" id="name"
+                                            placeholder="Enter Project Name" required
+                                            value="<%= skills[item].name %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="desc" class="col-sm-3 col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="description" id="desc"
+                                            placeholder="Enter Description" required
+                                            value="<%= skills[item].description %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="skill" class="col-sm-3 col-form-label">Skill number</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="skill" id="kill"
+                                            placeholder="Enter Skill" required
+                                            value="<%= skills[item].skill %>">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="image" class="col-sm-3 col-form-label">Image</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" class="form-control" name="imageskill" id="image"
+                                            placeholder="Enter Skill" required
+                                            value="<%= skills[item].imageskill %>">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" value="Update" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% } %>
+
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal Add New-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Skill</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/dashboard/add_skill" method="post" enctype="multipart/form-data">
+                    <div class="mb-3 row">
+                        <label for="name" class="col-sm-3 col-form-label">Skill Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" class="form-control" id="name"
+                                placeholder="Enter Skill Name" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="description" class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="description" class="form-control" id="description"
+                                placeholder="Enter Description" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="skill" class="col-sm-3 col-form-label">Image</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="skill" class="form-control" id="skill"
+                                placeholder="Enter Project Link" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="image" class="col-sm-3 col-form-label">Image</label>
+                        <div class="col-sm-9">
+                            <input type="file" name="image" class="form-control" id="image"
+                                placeholder="Enter Project Link" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary">Close</button>
+                        <input type="submit" value="Add" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../includes/footer.ejs') %>

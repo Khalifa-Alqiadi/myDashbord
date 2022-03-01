@@ -28,7 +28,7 @@ userInfo.pre('save', async function(next) {
     next();
 });
 
-userInfo.method.checkPassword = async function(password){
+userInfo.methods.checkPassword = async function(password){
     const result = await bcrypt.compare(password, this.password)
     return result
 }
